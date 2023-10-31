@@ -1,3 +1,24 @@
+# Plan
+
+### features
+
+LoggedOut:
+-HomePage
+-Sign IN Page/Sign Up Form
+LoggedIN:
+After Authentication
+-Browse Page:
+-Header
+-LoginForm
+-Main
+-Trailer Background
+-Movie Title and Description
+-Movie Suggestions - MovieList \* N (Vertical SCrolling)
+
+- Integrating GPT
+  -searchBar
+  -suggestMovies
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
