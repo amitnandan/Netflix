@@ -1,9 +1,12 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import { checkValidateData } from "../utils/validate";
+import { checkValidateData, checkValidateDataSignUp } from "../utils/validate";
 
 const Login = () => {
-  const [isSignINForm, setIsSignInForm] = useState();
+  const [isSignINForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
 
@@ -13,11 +16,19 @@ const Login = () => {
 
   const handleButtonClick = () => {
     //validate the form data
-    const message = checkValidateData(
-      email.current.value,
-      password.current.value
-    );
-    if (message != null) return <></>;
+    let message = null;
+    if (isSignINForm) {
+      message = checkValidateData(email.current.value, password.current.value);
+    } else {
+      message = checkValidateDataSignUp(
+        email.current.value,
+        password.current.value,
+        name.current.value
+      );
+    }
+
+    //console.log(message);
+    setErrorMessage(message);
   };
 
   return (
@@ -39,6 +50,7 @@ const Login = () => {
 
         {!isSignINForm && (
           <input
+            ref={name}
             type="text"
             placeholder="Full Name"
             className="p-2 my-4 w-full bg-gray-400 placeholder-gray-700"
@@ -57,6 +69,7 @@ const Login = () => {
           placeholder="Password"
           className="p-2 my-4 w-full bg-gray-400 placeholder-gray-700"
         />
+        <p className="text-red-600 font-bold text-lg py-2">{errorMessage}</p>
         <button
           className="p-4 my-6 rounded-lg bg-red-800 w-full"
           onClick={handleButtonClick}
