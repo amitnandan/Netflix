@@ -12,11 +12,10 @@ export const checkValidateData = (email, password, fullName) => {
 };
 
 export const checkValidateDataSignUp = (email, password, fullName) => {
-  const isFullNameValid = fullName.trim();
+  fullName = fullName.trim();
 
-  if (isFullNameValid === "") return "Full Name is Required";
-  else if (!/^[A-Za-z\s]+$/.test(isFullNameValid))
-    return "Full name can only contain letters and spaces.";
+  const isFullNameValid = /^[A-Za-z\s]+$/.test(fullName);
+  console.log(isFullNameValid);
   const isEmailValid =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       email
@@ -24,6 +23,8 @@ export const checkValidateDataSignUp = (email, password, fullName) => {
   const isPasswordValid =
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(password);
 
+  if (!isFullNameValid)
+    return "Full Name is Required | Full name can only contain letters and spaces.";
   if (!isEmailValid) return "Email is Not Valid";
   if (!isPasswordValid) return "Password is not Valid";
   return null;

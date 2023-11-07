@@ -1,10 +1,17 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidateData, checkValidateDataSignUp } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isSignINForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -17,6 +24,7 @@ const Login = () => {
   const handleButtonClick = () => {
     //validate the form data
     let message = null;
+
     if (isSignINForm) {
       message = checkValidateData(email.current.value, password.current.value);
     } else {
@@ -27,8 +35,50 @@ const Login = () => {
       );
     }
 
-    //console.log(message);
-    setErrorMessage(message);
+    if (message !== null) {
+      setErrorMessage(message);
+      return; // Stop here if validation fails
+    }
+    // If validation is successful, proceed with Firebase authentication
+    setErrorMessage(null); // Clear any previous error messages
+
+    if (!isSignINForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+
+          // You can redirect the user to a different page or perform other actions here.
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorMessage + " - " + errorCode);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorMessage + " - " + errorCode);
+        });
+    }
   };
 
   return (
