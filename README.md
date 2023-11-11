@@ -14,6 +14,7 @@ After Authentication
 -Trailer Background
 -Movie Title and Description
 -Movie Suggestions - MovieList \* N (Vertical SCrolling)
+-get data from TMDB and show now playing API
 
 - Integrating GPT
   -searchBar
