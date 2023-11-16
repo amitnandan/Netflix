@@ -7,6 +7,9 @@ const VideoBackgroud = ({ movieId }) => {
 
   useMovieTrailer(movieId);
   const trailerVideo = useSelector((store) => store.movies?.trailerVideo);
+  if (!trailerVideo) {
+    return <div>Loading...</div>; // You can replace this with your own loading state or placeholder
+  }
   return (
     <div className="">
       <iframe
